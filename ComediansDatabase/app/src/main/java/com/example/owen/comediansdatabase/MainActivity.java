@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView)findViewById(R.id.list);
         dbhelper = SUCDatabaseHelper.getInstance(MainActivity.this);
+        handleIntent(getIntent());
         final Cursor cursor = dbhelper.getComediansList();
 
                     cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
@@ -56,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    Intent indent = new Intent(MainActivity.this, DetailActivity.class);
                     cursor.moveToPosition(i);
-                    intent.putExtra("id", cursor.getInt(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_COLUMN_ID)));
-                    startActivity(intent);
+                    indent.putExtra("id", cursor.getInt(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_COLUMN_ID)));
+                    startActivity(indent);
                 }
             });
 
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
                 }
             });
-        handleIntent(getIntent());
         }
 
     @Override
