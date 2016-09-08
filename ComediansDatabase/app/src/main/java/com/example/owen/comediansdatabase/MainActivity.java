@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,9 +32,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        handleIntent(getIntent());
+        ListView listView = (ListView) findViewById(R.id.list);
         dbhelper = SUCDatabaseHelper.getInstance(MainActivity.this);
-        Cursor cursor = dbhelper.getComediansList();
+        final Cursor cursor = dbhelper.getComediansList();
+        handleIntent(getIntent());
 
         CursorAdapter cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
             @Override
@@ -50,23 +52,30 @@ public class MainActivity extends AppCompatActivity {
                 yearTextView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_COLUMN_YEAR)));
             }
         };
+            listView.setAdapter(cursorAdapter);
 
-        ListView listView = (ListView) findViewById(R.id.list);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    cursor.moveToPosition(i);
+                    intent.putExtra("id", cursor.getInt(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_COLUMN_ID)));
+                    startActivity(intent);
+                }
+            });
 
-        listView.setAdapter(cursorAdapter);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
 
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-            }
-        });
+                }
+            });
 
-    }
+        }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
