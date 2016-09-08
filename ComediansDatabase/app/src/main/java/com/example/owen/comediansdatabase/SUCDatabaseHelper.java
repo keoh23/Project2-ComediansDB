@@ -3,6 +3,7 @@ package com.example.owen.comediansdatabase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -11,20 +12,20 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class SUCDatabaseHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Comedians_db";
     public static final String COMEDIANS_TABLE_NAME = "Comedians";
     public static final String COMEDIANS_COLUMN_ID = "_id";
-    public static final String COMEDIANS_COLUMN_NAME = "name";
-    public static final String COMEDIANS_COLUMN_YEAR = "year";
-    public static final String [] COMEDIANS_COLUMNS = {COMEDIANS_COLUMN_ID,COMEDIANS_COLUMN_NAME,COMEDIANS_COLUMN_YEAR};
+    public static final String COMEDIANS_NAME = "name";
+    public static final String COMEDIANS_YEAR = "year";
+    public static final String [] COMEDIANS_COLUMNS = {COMEDIANS_COLUMN_ID, COMEDIANS_NAME, COMEDIANS_YEAR};
 
     public static final String SQL_CREATE_COMEDIANS_TABLE =
             "CREATE TABLE " + COMEDIANS_TABLE_NAME +
                     "( " +
                     COMEDIANS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COMEDIANS_COLUMN_NAME + " TEXT," +
-                    COMEDIANS_COLUMN_YEAR + " TEXT )";
+                    COMEDIANS_NAME + " TEXT," +
+                    COMEDIANS_YEAR + " TEXT )";
     public static final String SQL_DROP_COMEDIANS_TABLE = "DROP TABLE IF EXISTS "+COMEDIANS_TABLE_NAME;
 
     //Creating as Singleton class
@@ -57,26 +58,26 @@ public class SUCDatabaseHelper extends SQLiteOpenHelper {
 
     public void addDefault(SQLiteDatabase sqLiteDatabase){
         ContentValues values = new ContentValues();
-        values.put(COMEDIANS_COLUMN_NAME, "Patton Oswalt");
-        values.put(COMEDIANS_COLUMN_YEAR, "2010");
+        values.put(COMEDIANS_NAME, "Patton Oswalt");
+        values.put(COMEDIANS_YEAR, "2010");
         sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);
 
         values = new ContentValues();
-        values.put(COMEDIANS_COLUMN_NAME, "Louis CK");
-        values.put(COMEDIANS_COLUMN_YEAR, "2007");
+        values.put(COMEDIANS_NAME, "Louis CK");
+        values.put(COMEDIANS_YEAR, "2007");
         sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);
 
         values = new ContentValues();
-        values.put(COMEDIANS_COLUMN_NAME, "Hannibal Buress");
-        values.put(COMEDIANS_COLUMN_YEAR, "2014");
+        values.put(COMEDIANS_NAME, "Hannibal Buress");
+        values.put(COMEDIANS_YEAR, "2014");
         sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);
     }
 
 //    public void addComedian(String name, String year){
 //        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 //        ContentValues values = new ContentValues();
-//        values.put(COMEDIANS_COLUMN_NAME, name);
-//        values.put(COMEDIANS_COLUMN_YEAR, year);
+//        values.put(COMEDIANS_NAME, name);
+//        values.put(COMEDIANS_YEAR, year);
 //        sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);     //creates a new row into our table
 //    }
 
@@ -95,26 +96,39 @@ public class SUCDatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor searchComedians(String query){
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor searchCursor = sqLiteDatabase.query(COMEDIANS_TABLE_NAME,
+        Cursor cursor = sqLiteDatabase.query(COMEDIANS_TABLE_NAME,
                 COMEDIANS_COLUMNS,
-                COMEDIANS_COLUMN_NAME + " LIKE ? OR " + COMEDIANS_COLUMN_YEAR + " LIKE ? OR ",
-                new String[]{"%" + query + "%", "%" + query + "%"},
+                COMEDIANS_NAME + " LIKE ?", //+ COMEDIANS_YEAR + " LIKE ? ",
+                new String[]{"%" + query + "%"}, //"%" + query + "%"},
                 null,
                 null,
                 null);
-        return searchCursor;
+        return cursor;
+    }
+
+    public Cursor detailsComedian(int id){
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query(COMEDIANS_TABLE_NAME,
+                COMEDIANS_COLUMNS,
+                COMEDIANS_COLUMN_ID + "= ?",
+                new String[]{String.valueOf(id)},
+                null,
+                null,
+                null);
+        DatabaseUtils.dumpCursor(cursor);
+        return cursor;
     }
 
 
 //    public Comedians getComedian (int id) {
 //        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-//        String[] projection = new String[]{COMEDIANS_COLUMN_ID,COMEDIANS_COLUMN_NAME,COMEDIANS_COLUMN_YEAR};
+//        String[] projection = new String[]{COMEDIANS_COLUMN_ID,COMEDIANS_NAME,COMEDIANS_YEAR};
 //        String selection = COMEDIANS_COLUMN_ID + " = ?";
 //        String[] selectionArgs = new String[]{ String.valueOf(id) };
 //        Cursor cursor = sqLiteDatabase.query(COMEDIANS_TABLE_NAME, projection, selection, selectionArgs, null, null, null, null);
 //        cursor.moveToFirst();
-//        String name = cursor.getString(cursor.getColumnIndex(COMEDIANS_COLUMN_NAME));
-//        String year = cursor.getString(cursor.getColumnIndex(COMEDIANS_COLUMN_YEAR));
+//        String name = cursor.getString(cursor.getColumnIndex(COMEDIANS_NAME));
+//        String year = cursor.getString(cursor.getColumnIndex(COMEDIANS_YEAR));
 //
 //        return new Comedians(id, name, year);
 //

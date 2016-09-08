@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.CursorAdapter;
@@ -18,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,15 +29,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListView listView = (ListView)findViewById(R.id.list);
         dbhelper = SUCDatabaseHelper.getInstance(MainActivity.this);
         final Cursor cursor = dbhelper.getComediansList();
-        handleIntent(getIntent());
 
-        CursorAdapter cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
+                    cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 return LayoutInflater.from(context).inflate(R.layout.list_item_layout, parent, false);
@@ -48,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 TextView textView = (TextView) view.findViewById(R.id.name_textview);
                 TextView yearTextView = (TextView) view.findViewById(R.id.year_textview);
 
-                textView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_COLUMN_NAME)));
-                yearTextView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_COLUMN_YEAR)));
+                textView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_NAME)));
+                yearTextView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_YEAR)));
             }
         };
             listView.setAdapter(cursorAdapter);
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
                 }
             });
-
+        handleIntent(getIntent());
         }
 
     @Override
@@ -99,7 +98,13 @@ public class MainActivity extends AppCompatActivity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(MainActivity.this, "Searching for " + query, Toast.LENGTH_SHORT).show();
+
+            Cursor cursor = dbhelper.searchComedians(query);
+            DatabaseUtils.dumpCursor(cursor);
+            cursor.moveToFirst();
+            cursorAdapter.changeCursor(cursor);
+//            cursorAdapter.notifyDataSetChanged();
+//            Toast.makeText(MainActivity.this, "Searching for " + query, Toast.LENGTH_SHORT).show();
         }
     }
 
