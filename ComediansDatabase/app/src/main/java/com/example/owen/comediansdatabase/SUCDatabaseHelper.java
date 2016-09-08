@@ -98,8 +98,8 @@ public class SUCDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.query(COMEDIANS_TABLE_NAME,
                 COMEDIANS_COLUMNS,
-                COMEDIANS_NAME + " LIKE ?", //+ COMEDIANS_YEAR + " LIKE ? ",
-                new String[]{"%" + query + "%"}, //"%" + query + "%"},
+                COMEDIANS_NAME + " LIKE ? OR" + COMEDIANS_YEAR + " LIKE ? ",
+                new String[]{"%" + query + "%", "%" + query + "%"},
                 null,
                 null,
                 null);

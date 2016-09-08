@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -67,10 +68,8 @@ public class MainActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 }
             });
         handleIntent(getIntent());
@@ -116,8 +115,26 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+//        FragmentManager fm = getFragmentManager();
         if (id == R.id.action_settings) {
             return true;
+//        switch (item.getItemId()) {
+//
+//            case R.id.actionitem_alertdialog:
+//                MyAlertDialogFragment alertDialog = new MyAlertDialogFragment();
+//                alertDialog.setRetainInstance(true);
+//                alertDialog.show(fm, "alertfragment");
+//                break;
+//            case R.id.actionitem_userdialog:
+//               MyDialogFragment editNameDialog = new MyDialogFragment();
+//                editNameDialog.setRetainInstance(true);
+//                editNameDialog.show(fm, "userfragemnt");
+//                break;
+//
+//            default:
+//                break;
+
+
         }
         return super.onOptionsItemSelected(item);
     }
