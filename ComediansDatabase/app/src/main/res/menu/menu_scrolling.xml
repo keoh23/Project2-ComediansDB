@@ -22,10 +22,10 @@
         <!--app:showAsAction="never"-->
         <!--android:title="Enter user"/>-->
 
-    <!--<item-->
-        <!--android:id="@+id/action_settings"-->
-        <!--android:orderInCategory="3"-->
-        <!--android:title="@string/action_settings"-->
-        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="3"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 
 </menu>

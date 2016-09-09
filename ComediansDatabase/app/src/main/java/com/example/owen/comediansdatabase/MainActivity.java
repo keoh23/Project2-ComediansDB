@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView)findViewById(R.id.list);
         dbhelper = SUCDatabaseHelper.getInstance(MainActivity.this);
         final Cursor cursor = dbhelper.getComediansList();
+        cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
 
-                    cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 return LayoutInflater.from(context).inflate(R.layout.list_item_layout, parent, false);
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    Cursor cursor = cursorAdapter.getCursor();
                     cursor.moveToPosition(i);
                     intent.putExtra("id", cursor.getInt(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_COLUMN_ID)));
                     startActivity(intent);
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             DatabaseUtils.dumpCursor(cursor);
             cursor.moveToFirst();
             cursorAdapter.changeCursor(cursor);
-//            cursorAdapter.notifyDataSetChanged();
+            cursorAdapter.notifyDataSetChanged();
 //            Toast.makeText(MainActivity.this, "Searching for " + query, Toast.LENGTH_SHORT).show();
         }
     }
@@ -133,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //            default:
 //                break;
-
-
         }
         return super.onOptionsItemSelected(item);
     }

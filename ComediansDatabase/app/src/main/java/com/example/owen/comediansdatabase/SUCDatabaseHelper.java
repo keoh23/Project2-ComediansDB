@@ -12,19 +12,21 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class SUCDatabaseHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Comedians_db";
     public static final String COMEDIANS_TABLE_NAME = "Comedians";
     public static final String COMEDIANS_COLUMN_ID = "_id";
     public static final String COMEDIANS_NAME = "name";
+    public static final String COMEDIANS_NATIONALITY = "nationality";
     public static final String COMEDIANS_YEAR = "year";
-    public static final String [] COMEDIANS_COLUMNS = {COMEDIANS_COLUMN_ID, COMEDIANS_NAME, COMEDIANS_YEAR};
+    public static final String [] COMEDIANS_COLUMNS = {COMEDIANS_COLUMN_ID, COMEDIANS_NAME, COMEDIANS_NATIONALITY, COMEDIANS_YEAR};
 
     public static final String SQL_CREATE_COMEDIANS_TABLE =
             "CREATE TABLE " + COMEDIANS_TABLE_NAME +
                     "( " +
                     COMEDIANS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COMEDIANS_NAME + " TEXT," +
+                    COMEDIANS_NATIONALITY + "TEXT," +
                     COMEDIANS_YEAR + " TEXT )";
     public static final String SQL_DROP_COMEDIANS_TABLE = "DROP TABLE IF EXISTS "+COMEDIANS_TABLE_NAME;
 
@@ -59,16 +61,19 @@ public class SUCDatabaseHelper extends SQLiteOpenHelper {
     public void addDefault(SQLiteDatabase sqLiteDatabase){
         ContentValues values = new ContentValues();
         values.put(COMEDIANS_NAME, "Patton Oswalt");
+        values.put(COMEDIANS_NATIONALITY, "American");
         values.put(COMEDIANS_YEAR, "2010");
         sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);
 
         values = new ContentValues();
         values.put(COMEDIANS_NAME, "Louis CK");
+        values.put(COMEDIANS_NATIONALITY, "American");
         values.put(COMEDIANS_YEAR, "2007");
         sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);
 
         values = new ContentValues();
         values.put(COMEDIANS_NAME, "Hannibal Buress");
+        values.put(COMEDIANS_NATIONALITY, "American");
         values.put(COMEDIANS_YEAR, "2014");
         sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);
     }
@@ -98,8 +103,8 @@ public class SUCDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.query(COMEDIANS_TABLE_NAME,
                 COMEDIANS_COLUMNS,
-                COMEDIANS_NAME + " LIKE ? OR" + COMEDIANS_YEAR + " LIKE ? ",
-                new String[]{"%" + query + "%", "%" + query + "%"},
+                COMEDIANS_NAME + " LIKE ? OR " + COMEDIANS_NATIONALITY + "LIKE ? OR " + COMEDIANS_YEAR + " LIKE ? ",
+                new String[]{"%" + query + "%", "%" + query + "%", "%" + query + "%"},
                 null,
                 null,
                 null);
