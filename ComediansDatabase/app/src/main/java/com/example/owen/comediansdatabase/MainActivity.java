@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView)findViewById(R.id.list);
         dbhelper = SUCDatabaseHelper.getInstance(MainActivity.this);
-        final Cursor cursor = dbhelper.getComediansList();
+        Cursor cursor = dbhelper.getComediansList();
         cursorAdapter = new CursorAdapter(MainActivity.this, cursor, 0) {
 
             @Override
@@ -46,10 +46,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
                 TextView textView = (TextView) view.findViewById(R.id.name_textview);
+                TextView nationTextView = (TextView) view.findViewById(R.id.nation_textview);
                 TextView yearTextView = (TextView) view.findViewById(R.id.year_textview);
 
                 textView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_NAME)));
-                yearTextView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_YEAR)));
+                nationTextView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_NATIONALITY)));
+                yearTextView.setText(cursor.getString(cursor.getColumnIndex(SUCDatabaseHelper.COMEDIANS_AGE)));
             }
         };
             listView.setAdapter(cursorAdapter);
@@ -104,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             cursor.moveToFirst();
             cursorAdapter.changeCursor(cursor);
             cursorAdapter.notifyDataSetChanged();
-//            Toast.makeText(MainActivity.this, "Searching for " + query, Toast.LENGTH_SHORT).show();
         }
     }
 
