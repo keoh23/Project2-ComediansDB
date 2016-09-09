@@ -10,6 +10,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner" //test runner runs the tests
     }
     buildTypes {
         release {
@@ -24,4 +25,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.0'
     compile 'com.android.support:design:24.2.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1' //espresso library dependency
+    androidTestCompile 'com.android.support:support-annotations:24.2.0'
 }

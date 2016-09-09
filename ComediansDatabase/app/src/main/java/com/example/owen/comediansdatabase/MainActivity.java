@@ -1,5 +1,6 @@
 package com.example.owen.comediansdatabase;
 
+import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 return LayoutInflater.from(context).inflate(R.layout.list_item_layout, parent, false);
             }
-
+            //TODO sortable list
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
                 TextView textView = (TextView) view.findViewById(R.id.name_textview);
@@ -66,13 +66,18 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
+            //TODO use dialog framgent to add (if possible)
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                    FragmentManager fm = getFragmentManager();
+                    MyDialogFragment editNameDialog = new MyDialogFragment();
+                    editNameDialog.setRetainInstance(true);
+                    editNameDialog.show(fm, "userfragemnt");
+
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
                 }
             });
         handleIntent(getIntent());
