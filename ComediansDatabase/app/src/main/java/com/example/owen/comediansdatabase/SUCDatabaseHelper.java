@@ -16,7 +16,7 @@ public class SUCDatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Comedians_db";
     public static final String COMEDIANS_TABLE_NAME = "Comedians";
-
+    //TODO add more columns
     //instantiating columns in database
     public static final String COMEDIANS_COLUMN_ID = "_id";
     public static final String COMEDIANS_NAME = "name";
@@ -117,7 +117,7 @@ public class SUCDatabaseHelper extends SQLiteOpenHelper {
         values.put(COMEDIANS_PICTURE, R.drawable.jimcarrey);
         sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);
     }
-
+    //TODO how to use for adding row?
     public void addComedian(String name, String nationality, String age){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -125,8 +125,9 @@ public class SUCDatabaseHelper extends SQLiteOpenHelper {
         values.put(COMEDIANS_NATIONALITY, nationality);
         values.put(COMEDIANS_AGE, age);
         sqLiteDatabase.insert(COMEDIANS_TABLE_NAME, null, values);     //creates a new row into our table
+        sqLiteDatabase.close();
     }
-
+    //TODO how to use for deleting row?
     public void deleteComedian(int id){
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         String selection = COMEDIANS_COLUMN_ID + " = ?";

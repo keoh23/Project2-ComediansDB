@@ -9,10 +9,10 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
 
 /**
  * Created by Owen on 9/9/2016.
@@ -28,9 +28,9 @@ public class MainActivityTest {
     public void testSearch() throws Exception{
         onView(withId(R.id.search))
                 .perform(click());
-        onView(withId(R.id.search))
-                .perform(typeText("atton"));
-        onView(withId(R.id.list))
-                .check(matches(withText("Patton Oswalt")));
+        onView(withId(android.support.design.R.id.search_src_text))
+                .perform(typeText("patton"), pressKey(66));
     }
+    //TODO add test for clicking into comedian details
+    //TODO add test for adding comedians
 }
